@@ -16,6 +16,13 @@ const languages = [
   { code: "PA", label: "ਪੰਜਾਬੀ" },
 ];
 
+const dashboardPageByRole = {
+  patient: "patientDashboard",
+  doctor: "doctorDashboard",
+  pharmacist: "pharmacyDashboard",
+  admin: "adminDashboard",
+};
+
 export default function Navbar({ nav, auth }) {
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -40,7 +47,8 @@ export default function Navbar({ nav, auth }) {
         <nav className="nav-links">
           {links.map((l) => (
             <a
-              key={l.page} href="#"
+              key={l.page}
+              href="#"
               onClick={(e) => { e.preventDefault(); go(l.page); }}
               className={nav.page === l.page ? "active" : ""}
             >
@@ -52,7 +60,9 @@ export default function Navbar({ nav, auth }) {
         <div className="nav-actions">
           <div className="lang-switcher">
             <button
-              className="btn btn-ghost btn-sm" title="Language" style={{ display: "flex" }}
+              className="btn btn-ghost btn-sm"
+              title="Language"
+              style={{ display: "flex" }}
               onClick={() => setLangOpen((o) => !o)}
             >
               <Icon name="globe" size={16} /> {language} <Icon name="chevronDown" size={14} />
@@ -75,7 +85,7 @@ export default function Navbar({ nav, auth }) {
           {session ? (
             <a
               href="#"
-              onClick={(e) => { e.preventDefault(); go(session.role === "patient" ? "patientDashboard" : `${session.role}Dashboard`); }}
+              onClick={(e) => { e.preventDefault(); go(dashboardPageByRole[session.role] || "landing"); }}
               className="btn btn-primary btn-sm"
             >
               My Dashboard
