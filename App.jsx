@@ -86,30 +86,18 @@ export default function App() {
 
   // ---------- Public marketing site ----------
   const publicPages = {
-  landing: <Landing nav={nav} />,
-  specialists: <Specialists nav={nav} />,
-  doctorProfile: <DoctorProfile nav={nav} />,
-  departments: <Departments nav={nav} />,
-  about: <About />,
-  contact: <Contact />,
-  howItWorks: <HowItWorks nav={nav} />,
-
-  bookAppointment: (
-    <BookAppointment
-      nav={nav}
-      appointments={appointments}
-      setAppointments={setAppointments}
-    />
-  ),
-};
+    landing: <Landing nav={nav} />,
+    specialists: <Specialists nav={nav} />,
+    doctorProfile: <DoctorProfile nav={nav} />,
+    departments: <Departments nav={nav} />,
+    about: <About />,
+    contact: <Contact />,
+    howItWorks: <HowItWorks nav={nav} />,
+  };
 
   if (publicPages[page]) {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      {publicPages[page]}
-    </PublicLayout>
-  );
-}
+    return <PublicLayout nav={nav} auth={auth}>{publicPages[page]}</PublicLayout>;
+  }
 
   // ---------- Auth screens ----------
   if (page === "patientLogin") {
@@ -152,10 +140,12 @@ if (page === "adminLogin") {
   );
 }
 
+
   // ---------- Patient portal (protected: role === "patient") ----------
   const patientPages = {
     patientDashboard: <PatientDashboard nav={nav} />,
     aiSpecialist: <AISpecialistFinder nav={nav} />,
+    bookAppointment: <BookAppointment nav={nav} appointments={appointments} setAppointments={setAppointments} />,
     appointmentConfirmation: <AppointmentConfirmation nav={nav} appointments={appointments} />,
     myAppointments: <MyAppointments nav={nav} appointments={appointments} setAppointments={setAppointments} />,
     myPrescriptions: <MyPrescriptions nav={nav} />,
@@ -169,9 +159,11 @@ if (page === "adminLogin") {
   };
 
   if (patientPages[page]) {
-    if (!session || session.role !== "patient") return <PatientLogin nav={nav} auth={auth} />;
-    return <PatientLayout nav={nav} auth={auth}>{patientPages[page]}</PatientLayout>;
+  if (!session || session.role !== "patient") {
+    return <PublicLayout nav={nav} auth={auth}><PatientLogin nav={nav} auth={auth} /></PublicLayout>;
   }
+  return <PatientLayout nav={nav} auth={auth}>{patientPages[page]}</PatientLayout>;
+}
 
   // ---------- Doctor portal (protected: role === "doctor") ----------
   const doctorPages = {
@@ -182,13 +174,17 @@ if (page === "adminLogin") {
   };
 
   if (doctorPages[page]) {
-    if (!session || session.role !== "doctor") return <DoctorLogin nav={nav} auth={auth} />;
+    if (!session || session.role !== "doctor") {
+      return <PublicLayout nav={nav} auth={auth}><DoctorLogin nav={nav} auth={auth} /></PublicLayout>;
+    }
     return <DoctorLayout nav={nav} auth={auth}>{doctorPages[page]}</DoctorLayout>;
   }
 
   // ---------- Pharmacy portal (protected: role === "pharmacist") ----------
   if (page === "pharmacyDashboard") {
-    if (!session || session.role !== "pharmacist") return <PharmacyLogin nav={nav} auth={auth} />;
+    if (!session || session.role !== "pharmacist") {
+      return <PublicLayout nav={nav} auth={auth}><PharmacyLogin nav={nav} auth={auth} /></PublicLayout>;
+    }
     return <PharmacyDashboard nav={nav} auth={auth} dispensed={dispensed} setDispensed={setDispensed} />;
   }
 
@@ -203,7 +199,9 @@ if (page === "adminLogin") {
   };
 
   if (adminPages[page]) {
-    if (!session || session.role !== "admin") return <AdminLogin nav={nav} auth={auth} />;
+    if (!session || session.role !== "admin") {
+      return <PublicLayout nav={nav} auth={auth}><AdminLogin nav={nav} auth={auth} /></PublicLayout>;
+    }
     return <AdminLayout nav={nav} auth={auth}>{adminPages[page]}</AdminLayout>;
   }
 
