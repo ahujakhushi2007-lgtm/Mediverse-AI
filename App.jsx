@@ -100,11 +100,45 @@ export default function App() {
   }
 
   // ---------- Auth screens ----------
-  if (page === "patientLogin") return <PatientLogin nav={nav} auth={auth} />;
-  if (page === "patientRegister") return <PatientRegister nav={nav} auth={auth} />;
-  if (page === "doctorLogin") return <DoctorLogin nav={nav} auth={auth} />;
-  if (page === "pharmacyLogin") return <PharmacyLogin nav={nav} auth={auth} />;
-  if (page === "adminLogin") return <AdminLogin nav={nav} auth={auth} />;
+  if (page === "patientLogin") {
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      <PatientLogin nav={nav} auth={auth} />
+    </PublicLayout>
+  );
+}
+
+if (page === "patientRegister") {
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      <PatientRegister nav={nav} auth={auth} />
+    </PublicLayout>
+  );
+}
+
+if (page === "doctorLogin") {
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      <DoctorLogin nav={nav} auth={auth} />
+    </PublicLayout>
+  );
+}
+
+if (page === "pharmacyLogin") {
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      <PharmacyLogin nav={nav} auth={auth} />
+    </PublicLayout>
+  );
+}
+
+if (page === "adminLogin") {
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      <AdminLogin nav={nav} auth={auth} />
+    </PublicLayout>
+  );
+}
 
   // ---------- Patient portal (protected: role === "patient") ----------
   const patientPages = {
