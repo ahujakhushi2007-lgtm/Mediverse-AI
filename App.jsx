@@ -86,18 +86,30 @@ export default function App() {
 
   // ---------- Public marketing site ----------
   const publicPages = {
-    landing: <Landing nav={nav} />,
-    specialists: <Specialists nav={nav} />,
-    doctorProfile: <DoctorProfile nav={nav} />,
-    departments: <Departments nav={nav} />,
-    about: <About />,
-    contact: <Contact />,
-    howItWorks: <HowItWorks nav={nav} />,
-  };
+  landing: <Landing nav={nav} />,
+  specialists: <Specialists nav={nav} />,
+  doctorProfile: <DoctorProfile nav={nav} />,
+  departments: <Departments nav={nav} />,
+  about: <About />,
+  contact: <Contact />,
+  howItWorks: <HowItWorks nav={nav} />,
+
+  bookAppointment: (
+    <BookAppointment
+      nav={nav}
+      appointments={appointments}
+      setAppointments={setAppointments}
+    />
+  ),
+};
 
   if (publicPages[page]) {
-    return <PublicLayout nav={nav} auth={auth}>{publicPages[page]}</PublicLayout>;
-  }
+  return (
+    <PublicLayout nav={nav} auth={auth}>
+      {publicPages[page]}
+    </PublicLayout>
+  );
+}
 
   // ---------- Auth screens ----------
   if (page === "patientLogin") {
@@ -144,7 +156,6 @@ if (page === "adminLogin") {
   const patientPages = {
     patientDashboard: <PatientDashboard nav={nav} />,
     aiSpecialist: <AISpecialistFinder nav={nav} />,
-    bookAppointment: <BookAppointment nav={nav} appointments={appointments} setAppointments={setAppointments} />,
     appointmentConfirmation: <AppointmentConfirmation nav={nav} appointments={appointments} />,
     myAppointments: <MyAppointments nav={nav} appointments={appointments} setAppointments={setAppointments} />,
     myPrescriptions: <MyPrescriptions nav={nav} />,
