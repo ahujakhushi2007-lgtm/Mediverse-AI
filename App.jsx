@@ -93,53 +93,16 @@ export default function App() {
     about: <About />,
     contact: <Contact />,
     howItWorks: <HowItWorks nav={nav} />,
+    patientLogin: <PatientLogin nav={nav} auth={auth} />,
+    patientRegister: <PatientRegister nav={nav} auth={auth} />,
+    doctorLogin: <DoctorLogin nav={nav} auth={auth} />,
+    pharmacyLogin: <PharmacyLogin nav={nav} auth={auth} />,
+    adminLogin: <AdminLogin nav={nav} auth={auth} />,
   };
 
   if (publicPages[page]) {
     return <PublicLayout nav={nav} auth={auth}>{publicPages[page]}</PublicLayout>;
   }
-
-  // ---------- Auth screens ----------
-  if (page === "patientLogin") {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      <PatientLogin nav={nav} auth={auth} />
-    </PublicLayout>
-  );
-}
-
-if (page === "patientRegister") {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      <PatientRegister nav={nav} auth={auth} />
-    </PublicLayout>
-  );
-}
-
-if (page === "doctorLogin") {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      <DoctorLogin nav={nav} auth={auth} />
-    </PublicLayout>
-  );
-}
-
-if (page === "pharmacyLogin") {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      <PharmacyLogin nav={nav} auth={auth} />
-    </PublicLayout>
-  );
-}
-
-if (page === "adminLogin") {
-  return (
-    <PublicLayout nav={nav} auth={auth}>
-      <AdminLogin nav={nav} auth={auth} />
-    </PublicLayout>
-  );
-}
-
 
   // ---------- Patient portal (protected: role === "patient") ----------
   const patientPages = {
@@ -159,11 +122,11 @@ if (page === "adminLogin") {
   };
 
   if (patientPages[page]) {
-  if (!session || session.role !== "patient") {
-    return <PublicLayout nav={nav} auth={auth}><PatientLogin nav={nav} auth={auth} /></PublicLayout>;
+    if (!session || session.role !== "patient") {
+      return <PublicLayout nav={nav} auth={auth}><PatientLogin nav={nav} auth={auth} /></PublicLayout>;
+    }
+    return <PatientLayout nav={nav} auth={auth}>{patientPages[page]}</PatientLayout>;
   }
-  return <PatientLayout nav={nav} auth={auth}>{patientPages[page]}</PatientLayout>;
-}
 
   // ---------- Doctor portal (protected: role === "doctor") ----------
   const doctorPages = {
