@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
-import { demoPatient } from "../data/mockData";
+
 
 const tabs = ["Personal Information", "Medical Information", "Account Security", "Privacy"];
 
-export default function Profile() {
+export default function Profile({ patientProfile }) {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [showId, setShowId] = useState(false);
 
@@ -17,11 +17,11 @@ export default function Profile() {
           width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg,var(--navy-800),var(--navy-600))",
           color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 22, fontFamily: "var(--font-display)",
         }}>
-          {demoPatient.firstName[0]}
+          {patientProfile.firstName ? patientProfile.firstName[0] : patientProfile.name[0]}
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontWeight: 700, fontSize: 17 }}>{demoPatient.name}</p>
-          <p className="muted" style={{ fontSize: 13.5 }}>{demoPatient.email}</p>
+          <p style={{ fontWeight: 700, fontSize: 17 }}>{patientProfile.name}</p>
+          <p className="muted" style={{ fontSize: 13.5 }}>{patientProfile.email}</p>
         </div>
         <button className="btn btn-outline btn-sm" onClick={() => setShowId((s) => !s)}>
           {showId ? "Hide" : "Show"} Patient ID
@@ -29,7 +29,7 @@ export default function Profile() {
       </div>
       {showId && (
         <div className="card card-pad fade-up center" style={{ marginBottom: 24, background: "var(--navy-900)", border: "none" }}>
-          <p className="font-mono" style={{ color: "var(--teal-300)", fontSize: 24, fontWeight: 600 }}>{demoPatient.patientId}</p>
+          <p className="font-mono" style={{ color: "var(--teal-300)", fontSize: 24, fontWeight: 600 }}>{patientProfile.patientId}</p>
         </div>
       )}
 
@@ -44,20 +44,20 @@ export default function Profile() {
       <div className="card card-pad" style={{ maxWidth: 640 }}>
         {activeTab === "Personal Information" && (
           <>
-            <Row label="Full Name" value={demoPatient.name} />
-            <Row label="Date of Birth" value={new Date(demoPatient.dob).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} />
-            <Row label="Gender" value={demoPatient.gender} />
-            <Row label="Phone" value={demoPatient.phone} />
-            <Row label="Email" value={demoPatient.email} />
-            <Row label="Address" value={demoPatient.address} last />
+            <Row label="Full Name" value={patientProfile.name} />
+            <Row label="Date of Birth" value={patientProfile.dob ? new Date(patientProfile.dob).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "—"} />
+            <Row label="Gender" value={patientProfile.gender} />
+            <Row label="Phone" value={patientProfile.phone} />
+            <Row label="Email" value={patientProfile.email} />
+            <Row label="Address" value={patientProfile.address} last />
           </>
         )}
         {activeTab === "Medical Information" && (
           <>
-            <Row label="Blood Group" value={demoPatient.bloodGroup} />
-            <Row label="Allergies" value={demoPatient.allergies} />
+            <Row label="Blood Group" value={patientProfile.bloodGroup} />
+            <Row label="Allergies" value={patientProfile.allergies} />
             <Row label="Current Medications" value="Metformin, Atorvastatin" />
-            <Row label="Emergency Contact" value={demoPatient.emergencyContact} last />
+            <Row label="Emergency Contact" value={patientProfile.emergencyContact} last />
           </>
         )}
         {activeTab === "Account Security" && (
