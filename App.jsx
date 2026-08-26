@@ -56,6 +56,7 @@ export default function App() {
 
   // ---------- Auth state (replaces useAuth + localStorage) ----------
   const [session, setSession] = useState(null);
+  const [patientProfile, setPatientProfile] = useState(demoPatient);
 
   // ---------- Shared app data (replaces useLocalStorage) ----------
   const [appointments, setAppointments] = useState([]);
@@ -68,8 +69,10 @@ export default function App() {
     window.scrollTo(0, 0);
   }
 
-  function loginAsPatient() {
-    setSession({ role: "patient", id: demoPatient.patientId, name: demoPatient.name });
+  function loginAsPatient(profile) {
+    const p = profile || patientProfile;
+    if (profile) setPatientProfile(profile);
+    setSession({ role: "patient", id: p.patientId, name: p.name });
   }
   function loginAsDoctor(doctorId, name) {
     setSession({ role: "doctor", id: doctorId, name });
@@ -106,7 +109,7 @@ export default function App() {
 
   // ---------- Patient portal (protected: role === "patient") ----------
   const patientPages = {
-    patientDashboard: <PatientDashboard nav={nav} />,
+    patientDashboard: <PatientDashboard nav={nav} patientProfile={patientProfile} />,
     aiSpecialist: <AISpecialistFinder nav={nav} />,
     bookAppointment: <BookAppointment nav={nav} appointments={appointments} setAppointments={setAppointments} />,
     appointmentConfirmation: <AppointmentConfirmation nav={nav} appointments={appointments} />,
@@ -116,16 +119,16 @@ export default function App() {
     myReports: <MyReports nav={nav} />,
     reportViewer: <ReportViewer nav={nav} />,
     medicalHistory: <MedicalHistory />,
-    patientPharmacy: <PatientPharmacy />,
+    patientPharmacy: <PatientPharmacy patientProfile={patientProfile} />,
     notifications: <Notifications notifications={notifications} setNotifications={setNotifications} />,
-    profile: <Profile />,
+    profile: <Profile patientProfile={patientProfile} />,
   };
 
   if (patientPages[page]) {
     if (!session || session.role !== "patient") {
       return <PublicLayout nav={nav} auth={auth}><PatientLogin nav={nav} auth={auth} /></PublicLayout>;
     }
-    return <PatientLayout nav={nav} auth={auth}>{patientPages[page]}</PatientLayout>;
+    return <PatientLayout nav={nav} auth={auth} patientProfile={patientProfile}>{patientPages[page]}</PatientLayout>;
   }
 
   // ---------- Doctor portal (protected: role === "doctor") ----------
