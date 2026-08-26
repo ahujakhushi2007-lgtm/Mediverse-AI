@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Icon from "./Icon";
-import { demoPatient } from "../data/mockData";
 import AIAssistant from "./AIAssistant";
 
 const navItems = [
@@ -15,7 +14,7 @@ const navItems = [
   { page: "profile", label: "Profile", icon: "user" },
 ];
 
-export default function PatientLayout({ nav, auth, children }) {
+export default function PatientLayout({ nav, auth, patientProfile, children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { logout } = auth;
 
@@ -67,7 +66,7 @@ export default function PatientLayout({ nav, auth, children }) {
               width: 34, height: 34, borderRadius: "50%", background: "var(--navy-100)", color: "var(--navy-800)",
               display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 13,
             }}>
-              {demoPatient.firstName[0]}
+              {patientProfile.firstName ? patientProfile.firstName[0] : patientProfile.name[0]}
             </div>
           </a>
         </header>
