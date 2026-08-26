@@ -38,7 +38,19 @@ export default function PatientRegister({ nav, auth }) {
   }
 
   function handleContinue() {
-    loginAsPatient();
+    loginAsPatient({
+      patientId,
+      name: form.fullName,
+      firstName: form.fullName.trim().split(" ")[0] || form.fullName,
+      dob: form.dob,
+      gender: form.gender,
+      phone: form.mobile,
+      email: form.email,
+      address: form.address,
+      emergencyContact: form.emergencyContact,
+      bloodGroup: form.bloodGroup,
+      allergies: form.allergies || "None",
+    });
     nav.navigate("patientDashboard");
   }
 
