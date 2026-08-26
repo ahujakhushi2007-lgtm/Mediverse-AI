@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
-import { demoPrescriptions, demoPatient } from "../data/mockData";
+import { demoPrescriptions } from "../data/mockData";
 
-export default function PatientPharmacy() {
+export default function PatientPharmacy({ patientProfile }) {
   const [tab, setTab] = useState("Monthly");
   const activeRx = demoPrescriptions.filter((p) => p.status === "Active");
 
@@ -17,7 +17,7 @@ export default function PatientPharmacy() {
         <Icon name="crossMed" size={26} style={{ color: "var(--teal-300)" }} />
         <div>
           <p style={{ color: "#fff", fontWeight: 700, fontSize: 15 }}>Show this ID at the pharmacy</p>
-          <p className="font-mono" style={{ color: "var(--teal-300)", fontSize: 20, fontWeight: 600 }}>{demoPatient.patientId}</p>
+          <p className="font-mono" style={{ color: "var(--teal-300)", fontSize: 20, fontWeight: 600 }}>{patientProfile.patientId}</p>
         </div>
       </div>
 
