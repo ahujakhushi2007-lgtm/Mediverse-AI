@@ -1,5 +1,5 @@
 import Icon from "../components/Icon";
-import { demoPatient, demoAppointments, demoPrescriptions, demoReports, doctors } from "../data/mockData";
+import { demoAppointments, demoPrescriptions, demoReports, doctors } from "../data/mockData";
 
 function greeting() {
   const h = new Date().getHours();
@@ -8,7 +8,7 @@ function greeting() {
   return "Good evening";
 }
 
-export default function PatientDashboard({ nav }) {
+export default function PatientDashboard({ nav, patientProfile }) {
   const upcoming = demoAppointments.find((a) => a.status === "Upcoming");
   const upcomingDoctor = upcoming && doctors.find((d) => d.id === upcoming.doctorId);
   const activePrescriptions = demoPrescriptions.filter((p) => p.status === "Active").length;
@@ -17,7 +17,7 @@ export default function PatientDashboard({ nav }) {
   return (
     <div>
       <div style={{ marginBottom: 30 }}>
-        <h1 style={{ fontSize: "clamp(22px,3vw,28px)" }}>{greeting()}, {demoPatient.firstName} 👋</h1>
+        <h1 style={{ fontSize: "clamp(22px,3vw,28px)" }}>{greeting()} 👋</h1>
         <p className="muted" style={{ marginTop: 6 }}>Here's your healthcare overview.</p>
       </div>
 
@@ -64,16 +64,16 @@ export default function PatientDashboard({ nav }) {
 
         <div className="card stat-card" style={{ gridColumn: "span 2" }}>
           <p style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 14 }}>Patient ID</p>
-          <p className="font-mono" style={{ fontSize: 22, fontWeight: 600, color: "var(--navy-900)", marginBottom: 16 }}>{demoPatient.patientId}</p>
+          <p className="font-mono" style={{ fontSize: 22, fontWeight: 600, color: "var(--navy-900)", marginBottom: 16 }}>{patientProfile.patientId}</p>
           <button onClick={() => nav.navigate("profile")} className="btn btn-outline btn-sm">Show Patient ID</button>
         </div>
 
         <div className="card stat-card" style={{ gridColumn: "span 2" }}>
           <p style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 14 }}>Medical Summary</p>
           <div className="flex gap-24" style={{ flexWrap: "wrap" }}>
-            <MiniStat label="Blood Group" value={demoPatient.bloodGroup} />
-            <MiniStat label="Allergies" value={demoPatient.allergies} />
-            <MiniStat label="Age" value={ageFromDob(demoPatient.dob)} />
+            <MiniStat label="Blood Group" value={patientProfile.bloodGroup} />
+            <MiniStat label="Allergies" value={patientProfile.allergies} />
+            <MiniStat label="Age" value={ageFromDob(patientProfile.dob)} />
           </div>
         </div>
       </div>
@@ -119,6 +119,7 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 }
 function ageFromDob(dob) {
+  if (!dob) return "—";
   const diff = Date.now() - new Date(dob).getTime();
   return Math.floor(diff / (365.25 * 24 * 3600 * 1000)) + " yrs";
 }
