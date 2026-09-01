@@ -146,31 +146,6 @@ export default function App() {
     return <DoctorLayout nav={nav} auth={auth}>{doctorPages[page]}</DoctorLayout>;
   }
 
-  // ---------- Pharmacy portal (protected: role === "pharmacist") ----------
-  if (page === "pharmacyDashboard") {
-    if (!session || session.role !== "pharmacist") {
-      return <PublicLayout nav={nav} auth={auth}><PharmacyLogin nav={nav} auth={auth} /></PublicLayout>;
-    }
-    return <PharmacyDashboard nav={nav} auth={auth} dispensed={dispensed} setDispensed={setDispensed} />;
-  }
-
-  // ---------- Admin portal (protected: role === "admin") ----------
-  const adminPages = {
-    adminDashboard: <AdminDashboard />,
-    adminDoctors: <AdminDoctors />,
-    adminPatients: <AdminPatients />,
-    adminAppointments: <AdminAppointments />,
-    adminPharmacy: <AdminPharmacy />,
-    adminAnalytics: <AdminAnalytics />,
-  };
-
-  if (adminPages[page]) {
-    if (!session || session.role !== "admin") {
-      return <PublicLayout nav={nav} auth={auth}><AdminLogin nav={nav} auth={auth} /></PublicLayout>;
-    }
-    return <AdminLayout nav={nav} auth={auth}>{adminPages[page]}</AdminLayout>;
-  }
-
   // ---------- 404 ----------
   return <PublicLayout nav={nav} auth={auth}><NotFound nav={nav} /></PublicLayout>;
 }
